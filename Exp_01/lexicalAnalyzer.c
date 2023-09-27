@@ -10,8 +10,8 @@ int lexemeBegin = 0;
 
 char* extractSubstring(char _line[256], int _lexemeBegin, int _forwardPointer) {
     char *result;
-    int _length = _forwardPointer - _lexemeBegin + 1;
-    result = malloc(_length * sizeof(char));
+    int _length = _forwardPointer - _lexemeBegin;
+    result = malloc((_length + 1) * sizeof(char));
 
     int _pos = 0;
     while (_pos < _length) {
@@ -30,7 +30,7 @@ void deterministicFiniteAutomata(char _line[256]) {
     lexemeBegin = forwardPointer = index;
     char currentCharacter;
 
-    while ((currentCharacter = _line[index]) != '\0') {
+    while ((currentCharacter = _line[forwardPointer]) != '\0') {
         // whitespace, so move forward
         // if (currentCharacter == ' ') {
         //     forwardPointer = lexemeBegin = index + 1;
@@ -39,32 +39,47 @@ void deterministicFiniteAutomata(char _line[256]) {
         // }
 
         // states of the DFA
+        // keywords[if, else, return, switch, break, continue], identifiers, numbers, relops
+
         switch(state) {
             case 0: 
                     switch(currentCharacter) {
-                        case 'i': forwardPointer++; state = 01; break;
+                        case 'i': forwardPointer++; state = 1; break;
                         case 'f': forwardPointer++; state = -12345; break;
                         case 's': forwardPointer++; state = -12345; break;
                         case '+': break;
                         case '-': break;
                         case '*': break;
                         case '/': break;
-                        default : printf("Unnknown characer found"); return;
+                        case ' ': forwardPointer++; state = 0; break;
+                        default : printf("Unknown characer found 1 - %c", currentCharacter); //return;
                     }
                     break;
 
             case 1: 
                     switch (currentCharacter) {
-                        default : printf("Unnknown characer found"); return;
+                        case 'n': forwardPointer++; state = 2; break;
+                        default : printf("Unknown characer found 2 - %c", currentCharacter); //return;
                     }
                     break;
 
             case 2: 
                     switch (currentCharacter) {
-                        default : printf("Unnknown characer found"); return;
+                        case 't': forwardPointer++; state = 3; break;
+                        default : printf("Unknown characer found 3 - %c", currentCharacter); //return;
                     }
                     break;
-            default : printf("Unnknown characer found"); return; 
+
+            case 3: 
+                    switch (currentCharacter) {
+                        case ';':
+                        case ' ': printf("return(keyword, %s)\n", extractSubstring(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
+                        case '\n': lexemeBegin = ++forwardPointer; state = 0; break;
+                        default: // work
+                    }
+                    break;
+
+            default : printf("Unknown characer found 4 - %c", currentCharacter); return; 
         }
     }
 
