@@ -46,6 +46,28 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case 'e': ++forwardPointer; state = 5; break;
                     case 'f': ++forwardPointer; state = 9; break;
                     case 'r': ++forwardPointer; state = 14; break;
+                    case 'a':
+                    case 'b':
+                    case 'c':
+                    case 'd':
+                    case 'g':
+                    case 'h':
+                    case 'j':
+                    case 'k':
+                    case 'l':
+                    case 'm':
+                    case 'n':
+                    case 'o':
+                    case 'p':
+                    case 'q':
+                    case 's':
+                    case 't':
+                    case 'u':
+                    case 'v':
+                    case 'w':
+                    case 'x':
+                    case 'y':
+                    case 'z': ++forwardPointer; state = 20; break;
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
                 break;
@@ -55,13 +77,13 @@ void deterministicFiniteAutomata(char _line[256]) {
                 switch (currentCharacter) {
                     case 'n': ++forwardPointer; state = 2; break;
                     case 'f': ++forwardPointer; state = 4; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 2:
                 switch (currentCharacter) {
                     case 't': ++forwardPointer; state = 3; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 3:
@@ -69,7 +91,7 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case ';': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
                 }
                 break;
 
@@ -77,26 +99,26 @@ void deterministicFiniteAutomata(char _line[256]) {
                 switch (currentCharacter) {
                     case ' ': 
                     case '(': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
                 }
                 break;
             
             case 5:
                 switch (currentCharacter) {
                     case 'l': ++forwardPointer; state = 6; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 6:
                 switch (currentCharacter) {
                     case 's': ++forwardPointer; state = 7; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 7:
                 switch (currentCharacter) {
                     case 'e': ++forwardPointer; state = 8; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 8:
@@ -104,32 +126,32 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case '{': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
                 }
                 break;
 
             case 9:
                 switch (currentCharacter) {
                     case 'l': ++forwardPointer; state = 10; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 10:
                 switch (currentCharacter) {
                     case 'o': ++forwardPointer; state = 11; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 11:
                 switch (currentCharacter) {
                     case 'a': ++forwardPointer; state = 12; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 12:
                 switch (currentCharacter) {
                     case 't': ++forwardPointer; state = 13; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 13:
@@ -137,38 +159,38 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case ';': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
                 }
                 break;
             
             case 14:
                 switch (currentCharacter) {
                     case 'e': ++forwardPointer; state = 15; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 15:
                 switch (currentCharacter) {
                     case 't': ++forwardPointer; state = 16; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 16:
                 switch (currentCharacter) {
                     case 'u': ++forwardPointer; state = 17; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 17:
                 switch (currentCharacter) {
                     case 'r': ++forwardPointer; state = 18; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 18:
                 switch (currentCharacter) {
                     case 'n': ++forwardPointer; state = 19; break;
-                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                    default: ++forwardPointer; state = 20; break;
                 }
                 break;
             case 19:
@@ -179,11 +201,55 @@ void deterministicFiniteAutomata(char _line[256]) {
                 }
                 break;
 
-            case 20: // ???
+            case 20: // checking for identifiers
                 switch (currentCharacter) {
-                    case 'n': ++forwardPointer; state = 19; break;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case 'a':
+                    case 'b':
+                    case 'c':
+                    case 'd':
+                    case 'e':
+                    case 'f':
+                    case 'g':
+                    case 'h':
+                    case 'i':
+                    case 'j':
+                    case 'k':
+                    case 'l':
+                    case 'm':
+                    case 'n':
+                    case 'o':
+                    case 'p':
+                    case 'q':
+                    case 'r':
+                    case 's':
+                    case 't':
+                    case 'u':
+                    case 'v':
+                    case 'w':
+                    case 'x':
+                    case 'y':
+                    case 'z': ++forwardPointer; state = 20; break;
+                    case ' ':
+                    case ';' : printf("accept(identifier, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
+                break;
+
+            // case 21: // ???
+            //     switch (currentCharacter) {
+            //         case 'z': ++forwardPointer; state = 21; break;
+            //         default: 
+            //     }
                 break;
             default : printf("Unknown characer found - %c", currentCharacter); return; 
         }
