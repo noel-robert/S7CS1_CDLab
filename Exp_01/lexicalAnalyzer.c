@@ -68,6 +68,20 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case 'x':
                     case 'y':
                     case 'z': ++forwardPointer; state = 20; break;
+                    case '<': ++forwardPointer; state = 21; break;
+                    case '>': ++forwardPointer; state = 22; break;
+                    case '=': ++forwardPointer; state = 23; break;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9': ++forwardPointer; state = 24; break;
+                    case '\n': ++forwardPointer; break;
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
                 break;
@@ -245,12 +259,50 @@ void deterministicFiniteAutomata(char _line[256]) {
                 }
                 break;
 
-            // case 21: // ???
-            //     switch (currentCharacter) {
-            //         case 'z': ++forwardPointer; state = 21; break;
-            //         default: 
-            //     }
+            case 21:
+                switch (currentCharacter) {
+                    case '>': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    case '=': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    default: printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                }
                 break;
+                
+            case 22:
+                switch (currentCharacter) {
+                    case '=': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    default: printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                }            
+                break;
+
+            case 23:
+                switch (currentCharacter) {
+                    case '=': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    default: printf("accept(arithmetic, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                }
+                break;
+
+            case 24:
+                switch (currentCharacter) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9': ++forwardPointer; state = 24; break;
+                    case ' ':
+                    case ')':
+                    case '}':
+                    case '\n':
+                    case ';' : printf("accept(number, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                }
+                break;
+
+
             default : printf("Unknown characer found - %c", currentCharacter); return; 
         }
     }
