@@ -1,1 +1,6 @@
-if else 
+// this is a sample program
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int a = 5;
