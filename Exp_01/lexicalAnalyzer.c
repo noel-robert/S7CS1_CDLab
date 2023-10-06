@@ -300,6 +300,7 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case '7':
                     case '8':
                     case '9': ++forwardPointer; state = 24; break;
+                    case '.': ++forwardPointer; state = 25; break;
                     case ' ':
                     case ')':
                     case '}':
@@ -308,7 +309,26 @@ void deterministicFiniteAutomata(char _line[256]) {
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
                 break;
-
+            case 25:
+                switch (currentCharacter) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9': ++forwardPointer; state = 25; break;
+                    case ' ':
+                    case ')':
+                    case '}':
+                    case '\n':
+                    case ';' : printf("accept(number, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    default: printf("Unknown character found - %c\n", currentCharacter); return;
+                }
+                break;
 
             default : printf("Unknown characer found - %c", currentCharacter); return; 
         }
