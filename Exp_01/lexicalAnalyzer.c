@@ -4,9 +4,15 @@
 #include <ctype.h>
 
 
-char line[512];
+// char line[512];
+struct SymbolTable {
+    int id;
+    char *identifier;
+} symtab[25];
+
 int forwardPointer = 0;
 int lexemeBegin = 0;
+int symtab_index = 0;
 
 char* extract(char _line[256], int _lexemeBegin, int _forwardPointer) {
     char *result;
@@ -26,8 +32,7 @@ char* extract(char _line[256], int _lexemeBegin, int _forwardPointer) {
 void deterministicFiniteAutomata(char _line[256]) {
     int state = 0;  // to store current state of the DFA
 
-    int index = 0;
-    lexemeBegin = forwardPointer = index;
+    lexemeBegin = forwardPointer = 0;
     char currentCharacter;
 
     while ((currentCharacter = _line[forwardPointer]) != '\0' && lexemeBegin < strlen(_line)) {
@@ -254,7 +259,9 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case 'y':
                     case 'z': ++forwardPointer; state = 20; break;
                     case ' ':
-                    case ';' : printf("accept(identifier, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
+                    case ';' : char *idf = extract(_line, lexemeBegin, forwardPointer-1);
+                               symtab[symtab_index].id = symtab_index + 1; symtab[symtab_index].identifier = idf; ++symtab_index;
+                               printf("accept(identifier, %s)\n", idf); lexemeBegin = ++forwardPointer; state = 0; break;
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
                 break;
@@ -313,7 +320,7 @@ int main() {
     FILE *inputFile;
     inputFile = fopen("inputFile.txt", "r");
 
-    // char line[512];
+    char line[512];
 
     while (fgets(line, sizeof(line), inputFile) != NULL) {
         // you have each line individually in the variable named line
@@ -321,6 +328,14 @@ int main() {
         else deterministicFiniteAutomata(line);
     }
 
+    // show symtab contents
+    int i = 0;
+    printf("\nSymbolTable\nID\tIdentifier");
+    while (i < symtab_index) {
+        printf("\n%d\t%s", symtab[i].id, symtab[i].identifier);
+        i++;
+    }
+    printf("\n\n");
     return 0;
 }
 
