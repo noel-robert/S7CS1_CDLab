@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 
-// char line[512];
 struct SymbolTable {
     int id;
     char *identifier;
@@ -365,9 +363,3 @@ int main() {
     printf("\n\n");
     return 0;
 }
-
-// NOTE
-// keywords[if, int, else,  float, return], identifiers, numbers, relops
-// currently handles if and else keywords, need newline symbol to recognize each
-// 'if else ' is also being recognized properly
-// check other states, might be missing a few in berween (3 and 4 ig ~ chat stoopid)
