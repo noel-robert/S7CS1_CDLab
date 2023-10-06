@@ -47,10 +47,10 @@ void deterministicFiniteAutomata(char _line[256]) {
         switch(state) {
             case 0: 
                 switch(currentCharacter) {
-                    case 'i': ++forwardPointer; state = 1; break;    
-                    case 'e': ++forwardPointer; state = 5; break;
-                    case 'f': ++forwardPointer; state = 9; break;
-                    case 'r': ++forwardPointer; state = 14; break;
+                    case 'i': ++forwardPointer; state = 1; break;   // for recognizing keywords - if, int
+                    case 'e': ++forwardPointer; state = 5; break;   // for recognizing keyword - else
+                    case 'f': ++forwardPointer; state = 9; break;   // for recognizing keyword - float
+                    case 'r': ++forwardPointer; state = 14; break;   // for recognizing keyword - return
                     case 'a':
                     case 'b':
                     case 'c':
@@ -72,10 +72,10 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case 'w':
                     case 'x':
                     case 'y':
-                    case 'z': ++forwardPointer; state = 20; break;
-                    case '<': ++forwardPointer; state = 21; break;
-                    case '>': ++forwardPointer; state = 22; break;
-                    case '=': ++forwardPointer; state = 23; break;
+                    case 'z': ++forwardPointer; state = 20; break;  // for recognizing identifiers that dont start with [e, f, i, r]
+                    case '<': ++forwardPointer; state = 21; break;  // to reconize relational operators - <>, <=, <
+                    case '>': ++forwardPointer; state = 22; break;  // to reconize relational operators - >=, >
+                    case '=': ++forwardPointer; state = 23; break;  // to reconize relational operator == and assignment operator =
                     case '0':
                     case '1':
                     case '2':
@@ -85,13 +85,13 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case '6':
                     case '7':
                     case '8':
-                    case '9': ++forwardPointer; state = 24; break;
+                    case '9': ++forwardPointer; state = 24; break;  // to recognize numbers
                     case '\n': ++forwardPointer; break;
                     default: printf("Unknown character found - %c\n", currentCharacter); return;
                 }
                 break;
 
-            
+            // recognizing 'if' and 'int' keywords
             case 1:
                 switch (currentCharacter) {
                     case 'n': ++forwardPointer; state = 2; break;
@@ -110,18 +110,18 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case ';': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking for identifier
                 }
                 break;
-
             case 4:
                 switch (currentCharacter) {
                     case ' ': 
                     case '(': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking for identifier
                 }
                 break;
             
+            // recognizing 'else' keyword
             case 5:
                 switch (currentCharacter) {
                     case 'l': ++forwardPointer; state = 6; break;
@@ -145,10 +145,11 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case '{': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking for identifier
                 }
                 break;
 
+            // recognizing 'float' keyword
             case 9:
                 switch (currentCharacter) {
                     case 'l': ++forwardPointer; state = 10; break;
@@ -178,10 +179,11 @@ void deterministicFiniteAutomata(char _line[256]) {
                     case ' ': 
                     case '\n':
                     case ';': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: ++forwardPointer; state = 20; break; // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking for identifier
                 }
                 break;
             
+            // recognizing 'return' keyword
             case 14:
                 switch (currentCharacter) {
                     case 'e': ++forwardPointer; state = 15; break;
@@ -216,11 +218,12 @@ void deterministicFiniteAutomata(char _line[256]) {
                 switch (currentCharacter) {
                     case ' ': 
                     case ';': printf("accept(keyword, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
-                    default: // continue checking coz identifier
+                    default: ++forwardPointer; state = 20; break; // continue checking for identifier
                 }
                 break;
 
-            case 20: // checking for identifiers
+            // checking for identifiers
+            case 20: 
                 switch (currentCharacter) {
                     case '0':
                     case '1':
@@ -266,6 +269,7 @@ void deterministicFiniteAutomata(char _line[256]) {
                 }
                 break;
 
+            // checking for relops '<>' and '<=' and '<'
             case 21:
                 switch (currentCharacter) {
                     case '>': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
@@ -273,7 +277,8 @@ void deterministicFiniteAutomata(char _line[256]) {
                     default: printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer-1)); lexemeBegin = ++forwardPointer; state = 0; break;
                 }
                 break;
-                
+
+            // checking for relops '>=' and '>'
             case 22:
                 switch (currentCharacter) {
                     case '=': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
@@ -281,6 +286,7 @@ void deterministicFiniteAutomata(char _line[256]) {
                 }            
                 break;
 
+            // checking for relational operator '==' and assignment operator '='
             case 23:
                 switch (currentCharacter) {
                     case '=': printf("accept(relop, %s)\n", extract(_line, lexemeBegin, forwardPointer)); lexemeBegin = ++forwardPointer; state = 0; break;
@@ -288,6 +294,7 @@ void deterministicFiniteAutomata(char _line[256]) {
                 }
                 break;
 
+            // checking for numbers
             case 24:
                 switch (currentCharacter) {
                     case '0':
