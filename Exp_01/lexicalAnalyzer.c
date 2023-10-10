@@ -34,12 +34,11 @@ void deterministicFiniteAutomata(char _line[256]) {
     char currentCharacter;
 
     while ((currentCharacter = _line[forwardPointer]) != '\0' && lexemeBegin < strlen(_line)) {
-        // whitespace, so move forward
-        // if (currentCharacter == ' ') {
-        //     forwardPointer = lexemeBegin = index + 1;
-        //     state = 0;
-        //     continue;
-        // }
+        if (currentCharacter == '{' || currentCharacter == '}' || currentCharacter == '(' || currentCharacter == ')') {
+            lexemeBegin = ++forwardPointer;
+            state = 0;
+            continue;
+        }
 
         // states of the DFA
         switch(state) {
