@@ -86,6 +86,14 @@ Grammar: S -> (L) | a
 
 
 
+
+
+/*
+Recursive Descend Parser
+Grammar: E -> iE'
+         E' -> +iE' | ∈
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -138,18 +146,18 @@ void match(char c) {
 void E() {
     if (look_ahead == 'i') {
         printParsingStep(input_str+ind, "E -> iE'");
-        match(look_ahead);
+        match('i');
         Edash();
     }
 }
 
 void Edash() {
     if (look_ahead == '+') {
-        printParsingStep(input_str+ind, "E -> +iE'");
+        printParsingStep(input_str+ind, "E' -> +iE'");
         match('+');
         match('i');
         Edash();
     } else {
-        printParsingStep(input_str+ind, "E -> ∈");
+        printParsingStep(input_str+ind, "E' -> ∈");
     }
 }
