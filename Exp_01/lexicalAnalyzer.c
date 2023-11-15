@@ -1,3 +1,9 @@
+/*
+Experiment 1 - Lexical Analyzer using C
+Noel John Robert
+B20CS1147
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -362,3 +368,29 @@ int main() {
     printf("\n\n");
     return 0;
 }
+
+
+/*
+OUTPUT
+accept(keyword, int)
+accept(keyword, int)
+accept(identifier, abc)
+accept(arithmetic, =)
+accept(number, 5)
+accept(keyword, int)
+accept(identifier, dfs)
+accept(arithmetic, =)
+accept(number, 8)
+accept(keyword, float)
+accept(identifier, cvb)
+accept(arithmetic, =)
+accept(number, 8.056)
+accept(keyword, return)
+accept(number, 0)
+
+SymbolTable
+ID      Identifier
+1       abc
+2       dfs
+3       cvb
+*/
