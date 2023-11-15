@@ -1,0 +1,9 @@
+#include<stdio.h>
+int main() {
+int a = 9;
+float Bg = -3;
+if(a>b)
+printf("greater");
+else
+printf("lesser");
+}
