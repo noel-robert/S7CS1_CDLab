@@ -1,3 +1,4 @@
 /.vscode
 **/*.out
 **/*.yy.c
+**/y.tab.*
