@@ -37,3 +37,20 @@ Write a C program to implement a recursive descend parser for the given language
 
 ###### Experiment 04 - Shift Reduce Parser
 Write a C program to implement a shift reduce parser for any given set of productions.
+
+<br>
+
+###### Experiment 05 - YACC
+Use LEX and YACC tools to check if an expression is valid or not.
+Use the following commands to run tools
+```
+yacc -d filename.y
+lex filename.l
+cc lex.yy.c y.tab.c -ll
+./a.out
+```
+
+<br>
+
+###### Experiment 06 - YACC
+Use LEX and YACC tools to create a calculator
