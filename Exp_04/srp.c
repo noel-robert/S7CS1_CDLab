@@ -54,12 +54,20 @@ void push(char ch) {
 	stk[stk_top++] = ch;
 }
 char pop() {
-	return stk[stk_top--];
+	printf("removing - %c\n", stk[--stk_top]);
+	return stk[stk_top];
 }
 
 // shift and reduce operations
 void shift(char input) {
 	push(input);
+
+	// debug
+	printf("%d::", stk_top);
+	for (int i=0; i<stk_top; i++) {
+		printf("%c", stk[i]); 
+	}
+	printf("\n\n");
 }
 void reduce(int productionIndex) {
 	for (int i=0; i<strlen(grammar[productionIndex].right); i++) {
@@ -67,6 +75,9 @@ void reduce(int productionIndex) {
 	}
 
 	push(grammar[productionIndex].left);
+
+	// debug
+	printf("%s\n\n", stk);
 }
 
 int main() {
@@ -101,13 +112,31 @@ int main() {
 	printf("\nInput string: "); scanf("%s", str);
 	strcpy(str, appendDollarSymbol(str));
 	int str_index = 0;	// to track position in str
+
+	// debug
+	// printf("%s\n", str);
+	// printf("%d\n\n", strlen(str));
 	
 	// processes
 	push('$');
 
-	while ((ch = str[str_index]) != '$') {
+	while (1) {
+		ch = str[str_index];
+
+		// exit condition
+		// exit condition is wrong
+		if ((stk[stk_top-2] == '$') && (stk[stk_top-1] == grammar[0].left) && (ch == '$')) {
+			printf("Successfully parsed string using given grammar\n");
+			break;
+		}
+
+		/*
+		when does parsing not work? - failure
+		- reached end of string, so nly reduction is possible but cannot reduce
+		*/
 		
-		if (stk[stk_top] == '$') {
+
+		if (stk[stk_top-1] == '$') {
 			// initial condition
 			shift(ch);
 			str_index++; // only do str_index++ on shifting
@@ -135,10 +164,16 @@ int main() {
 		}
 
 		if (possible_reductions == 0) {
+			if (ch == '$') {
+				printf("Not possible to Parse string using given grammar\n");
+				break;
+			}
+
 			shift(ch);
 			str_index++;
 			continue;
 		} else if (possible_reductions == 1) {
+			printf("Using grammar: %c->%s\n", grammar[reduction].left, grammar[reduction].right);
 			reduce(reduction);
 		} else {
 			printf("Reduce-Reduce conflict occurred\n");
@@ -146,7 +181,9 @@ int main() {
 		}
 	}
 
-	printf("%s\n", stk);
+
+
+	// printf("%s\n", stk);
 
 
 
@@ -180,13 +217,24 @@ int main() {
 	// 	printf("Dunnno bruv\n");
 	// }
 
+	// debug
 	// for (int i = 0; i < prodCount; i++) {
-    // 	printf("Production %d: %c -> %s^&\n", i + 1, grammar[i].left, grammar[i].right);
+    // 	printf("Production %d: %c -> %s\n", i + 1, grammar[i].left, grammar[i].right);
 	// }
 	
 
 	return 0;
 }
+
+
+
+// int main() {
+// 	char str[30] = "abcdefghij";
+
+// 	printf("%s", extract(str, 2, 4)); /* cde */
+// 	return 0;
+// }
+
 
 /*
 OUTPUT
