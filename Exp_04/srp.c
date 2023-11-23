@@ -124,16 +124,11 @@ int main() {
 		ch = str[str_index];
 
 		// exit condition
-		// exit condition is wrong
 		if ((stk[stk_top-2] == '$') && (stk[stk_top-1] == grammar[0].left) && (ch == '$')) {
 			printf("Successfully parsed string using given grammar\n");
 			break;
 		}
 
-		/*
-		when does parsing not work? - failure
-		- reached end of string, so nly reduction is possible but cannot reduce
-		*/
 		
 
 		if (stk[stk_top-1] == '$') {
@@ -159,7 +154,6 @@ int main() {
 				// reduction is possible
 				possible_reductions++;
 				reduction = i;
-				// also count no of possible reductions to find reduce-reduce conflict
 			}
 		}
 
@@ -181,62 +175,56 @@ int main() {
 		}
 	}
 
-
-
-	// printf("%s\n", stk);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// some problem here, check condition individually
-	// if (stk[stk_top - 1] == '$' && stk_top == 1 && str[str_index] == '$') {
-	// 	printf("Parsing successful\n");
-	// } else {
-	// 	printf("Parsing unsuccessful\n");
-	// }
-	
-
-	// debugging
-	// if (!(stk[stk_top - 1] == '$')) {
-	// 	printf("stk[stk_top - 1] == '$'\n");
-	// } else if (!(stk_top == 1)) {
-	// 	printf("stk_top == 1\n");
-	// } else if (!(str[str_index] == '$')) {
-	// 	printf("%c\n", str[str_index]);
-	// } else {
-	// 	printf("Dunnno bruv\n");
-	// }
-
-	// debug
-	// for (int i = 0; i < prodCount; i++) {
-    // 	printf("Production %d: %c -> %s\n", i + 1, grammar[i].left, grammar[i].right);
-	// }
-	
-
 	return 0;
 }
 
 
 
-// int main() {
-// 	char str[30] = "abcdefghij";
-
-// 	printf("%s", extract(str, 2, 4)); /* cde */
-// 	return 0;
-// }
-
 
 /*
 OUTPUT
 
+Input string: cdcd
+pushed - $
+pushed - c
+2::$c
+
+pushed - d
+3::$cd
+
+Using grammar: C->d
+removing - d
+pushed - C
+$cC
+
+Using grammar: C->cC
+removing - C
+removing - c
+pushed - C
+$CC
+
+pushed - c
+3::$Cc
+
+pushed - d
+4::$Ccd
+
+Using grammar: C->d
+removing - d
+pushed - C
+$CcC
+
+Using grammar: C->cC
+removing - C
+removing - c
+pushed - C
+$CCC
+
+Using grammar: S->CC
+removing - C
+removing - C
+pushed - S
+$SCC
+
+Successfully parsed string using given grammar
 */
