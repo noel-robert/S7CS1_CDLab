@@ -1,5 +1,5 @@
 /*
-Experiment 2.1 - Number of vovels in a string
+Experiment 2.3 - Number of vovels in a string
 Noel John Robert
 B20CS1147
 */
