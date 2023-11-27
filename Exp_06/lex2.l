@@ -1,3 +1,8 @@
+/*
+Experiment 6 - Calculator using LEX and YACC tool
+*/
+
+
 %{
 	/*Definition section*/
 	#include "y.tab.h"

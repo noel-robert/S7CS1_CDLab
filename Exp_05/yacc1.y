@@ -23,5 +23,5 @@ int main() {
 }
 
 int yyerror(char* s) {
-	printf("\nExpression is invalid\n");
+	printf("Expression is invalid\n");
 }
