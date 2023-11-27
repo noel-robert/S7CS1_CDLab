@@ -54,3 +54,13 @@ cc lex.yy.c y.tab.c -ll
 
 ###### Experiment 06 - YACC
 Use LEX and YACC tools to create a calculator
+
+<br>
+
+###### Experiment 07 - Intermediate Code Generation
+Program to create intermediate 3 address code from given expression
+
+<br>
+
+###### Experiment 08 - First and Follow
+Program to find First and Follow of a grammar
