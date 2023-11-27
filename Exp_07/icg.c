@@ -10,6 +10,7 @@ B20CS1147
 #include <string.h>
 #include <ctype.h>
 
+// struct to hold 3-address intermediate codes
 struct addr {
 	char left;
 	char right[4];
@@ -19,13 +20,10 @@ int addr_ind = 0;
 int stk_top = -1;	// points to top element
 char stk[100];
 void push(char ch) {
-	++stk_top;
-	stk[stk_top] = ch;
+	stk[++stk_top] = ch;
 }
 char pop() {
-	char ch = stk[stk_top];
-	stk_top--;
-	return ch;
+	return stk[stk_top--];
 }
 int priority(char ch) {
 	switch (ch) {
@@ -41,43 +39,6 @@ int priority(char ch) {
 	}
 }
 char result[100];
-// void postfix(char input[100]) {
-// 	int res_ind = 0;
-	
-// 	// processes for converting to postfix
-// 	// store final result into result variable
-// 	push('$');
-	
-// 	int i = 0;
-// 	while(i < strlen(input)) {
-// 		char ch = input[i];
-		
-// 		if (isalpha(ch)) {
-// 			result[res_ind] = ch;
-// 			res_ind++;
-// 			i++;
-// 			continue;
-// 		}
-				
-// 		while (priority(stk[stk_top]) >= priority(ch)) {
-// 			result[res_ind] = pop();
-// 			res_ind++;
-// 		}
-// 		push(ch);
-			
-		
-// 		i++;
-// 	}
-	
-// 	// remove remaining characters from stack
-// 	while(stk[stk_top] != '$') {
-// 		result[res_ind] = pop();
-// 		res_ind++;
-// 	}
-	
-	
-// 	result[res_ind] = '\0';
-// }
 void postfix(char input[100]) {
 	int res_ind = 0;
 
@@ -87,21 +48,33 @@ void postfix(char input[100]) {
 	while (i < strlen(input)) {
 		char ch = input[i++];
 
+		// directly push to stack
 		if (ch == '(' || ch == '^') {
 			push(ch);
-		} else if (isalpha(ch)) {
+			continue;
+		} 
+		
+		// if alphabet, add to result
+		if (isalpha(ch)) {
 			result[res_ind++] = ch;
-		} else if (ch == ')') {
+			continue;
+		} 
+		
+		// if ')' pop till '(' is found, then pop '('
+		if (ch == ')') {
 			while (stk[stk_top] != '(') {
 				result[res_ind] = pop();
 			}
 			pop();
-		} else {
-			while (priority(stk[stk_top]) >= priority(ch)) {
-				result[res_ind++] = pop();
-			}
-			push(ch);
+			continue;
+		} 
+		
+		// push/pop based on priority
+		while (priority(stk[stk_top]) >= priority(ch)) {
+			result[res_ind++] = pop();
 		}
+		push(ch);
+		
 	}
 
 	// remove remaining characters from stack
@@ -109,12 +82,12 @@ void postfix(char input[100]) {
 		result[res_ind++] = pop();
 	}
 
+	// add ending character to string
 	result[res_ind] = '\0';
 }
 
 
 int main() {
-
 	char input[100];
 	printf("Input Expression: "); scanf("%s", input);
 	
@@ -133,7 +106,7 @@ int main() {
 		ch = pfx[index];
 
 		if (!isalpha(ch)) {
-			// make output
+			// add data to struct
 			op[addr_ind].left = tempVar;
 			op[addr_ind].right[0] = pfx[index-2]; 
 			op[addr_ind].right[1] = pfx[index];
@@ -141,15 +114,13 @@ int main() {
 			op[addr_ind].right[3] = '\0';
 			addr_ind++;
 			
-			// actually make changes to pfx
+			// replace by temporary variable
 			pfx[index-2] = tempVar;
 			tempVar++;
 			
-			// left shift 
-			int shifts = 1;
+			// left shift by 2
 			for (int i=index+1; i<len; i++) {
 				pfx[i-2] = pfx[i];
-				shifts++;
 			}
 			len = len - 2;
 			index = 0;
@@ -171,7 +142,14 @@ int main() {
 
 /*
 OUTPUT
+Input Expression: a+b/c*d+e
+Equivalent postfix Expression: abc/d*+e+
 
+Intermediate 3 address codes:
+A = b/c
+B = A*d
+C = a+B
+D = C+e
 */
 
 /*
