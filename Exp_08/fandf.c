@@ -22,7 +22,57 @@ struct Productions {
 	int follow_index;
 } grammar[20];
 
-void findFirst(char symbol) {}
+char* extract(char _input[30], int _start, int _end) {
+    char *result;
+    int _length = _end - _start + 1;
+    result = malloc((_length + 1) * sizeof(char));
+
+    int _pos = 0;
+    while (_pos < _length) {
+        result[_pos] = _input[_start + _pos];
+        _pos++;
+    }
+    result[_pos] = '\0';
+
+    return result;
+}
+
+int isTerminal(char symbol) {
+	return islower(symbol);
+}
+
+void addToSet(char set[], char symbol, int *index) {
+	for (int i=0; i<*index; i++) {
+		if (set[i] == symbol) {
+			return;	// symbol already exists
+		}
+	}
+
+	set[(*index)++] = symbol;
+}
+
+void findFirst(char symbol) {
+	/*
+	Issue here:
+	- two productions with same LHS means two different arrays for first and follow, along with symbol
+	- so, first and follow should be another struct 
+	*/
+	for (int i=0; i<prodCount; i++) {
+		if (grammar[i].left == symbol) {
+			char firstSymbol = grammar[i].right[0];
+
+			if (isTerminal(firstSymbol)) {
+				addToSet(grammar[i].first, firstSymbol, &grammar[i].first_index);
+			} else {
+				if (firstSymbol != '#' && firstSymbol != '\0') {
+					findFirst(firstSymbol);
+				} else if (firstSymbol == '#') {
+					addToSet(grammar[i].first, '#', &grammar[i].first_index);
+				}
+			}
+		}
+	}
+}
 
 void findFollow(char symbol) {}
 
@@ -66,14 +116,14 @@ int main() {
 	}
 
 	// find follow for every LHS of productions
-	for (int i=0; i<prodCount; i++) {
-		findFollow(grammar[i].left);
-	}
+	// for (int i=0; i<prodCount; i++) {
+	// 	findFollow(grammar[i].left);
+	// }
 
 
 	for (int i=0; i<prodCount; i++) {
 		printf("First(%c): %s\n", grammar[i].left, grammar[i].first);
-		printf("Follow(%c): %s\n", grammar[i].left, grammar[i].follow);
+		// printf("Follow(%c): %s\n", grammar[i].left, grammar[i].follow);
 		printf("\n");
 	}
 
