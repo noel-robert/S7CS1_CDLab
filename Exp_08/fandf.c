@@ -16,12 +16,15 @@ struct Productions {
     char left;
     char right[30];
 
-	char first[30];
+	char first[100];
 	int first_index;
-	char follow[30];
+	char follow[100];
 	int follow_index;
 } grammar[20];
 
+void findFirst(char symbol) {}
+
+void findFollow(char symbol) {}
 
 int main() {
     FILE *inputFile = fopen("input.txt", "r");
@@ -57,8 +60,24 @@ int main() {
 
 
 
+	// find first for every LHS of productions
+	for (int i=0; i<prodCount; i++) {
+		findFirst(grammar[i].left);
+	}
+
+	// find follow for every LHS of productions
+	for (int i=0; i<prodCount; i++) {
+		findFollow(grammar[i].left);
+	}
 
 
+	for (int i=0; i<prodCount; i++) {
+		printf("First(%c): %s\n", grammar[i].left, grammar[i].first);
+		printf("Follow(%c): %s\n", grammar[i].left, grammar[i].follow);
+		printf("\n");
+	}
+
+	return 0;
 }
 
 
