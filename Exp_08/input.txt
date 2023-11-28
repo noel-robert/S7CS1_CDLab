@@ -1,0 +1,10 @@
+S->aBDh
+B->cC
+C->bC
+C->#
+D->E
+D->F
+E->g
+E->#
+F->f
+F->#
